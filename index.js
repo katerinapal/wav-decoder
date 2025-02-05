@@ -15,6 +15,12 @@ function decodeSync(buffer, opts) {
   var dataView = new DataView(buffer);
   var reader = createReader(dataView);
 
+  console.log('DATAVIEW');
+  console.log(dataView);
+
+  console.log('READER');
+  console.log(reader);
+
   if (reader.string(4) !== "RIFF") {
     throw new TypeError("Invalid WAV file");
   }
@@ -30,7 +36,17 @@ function decodeSync(buffer, opts) {
 
   do {
     var chunkType = reader.string(4);
+    
     var chunkSize = reader.uint32();
+    
+    //UPD
+    //var chunkSize = reader.uint32() * 2;
+
+    console.log('chunkType: ' + chunkType);
+    console.log('chunkSize: ' + chunkSize);
+    console.log('format:');
+    console.log(format);
+    console.log(opts);
 
     switch (chunkType) {
     case "fmt ":
@@ -118,6 +134,9 @@ function readPCM(reader, channelData, length, format, opts) {
 
   var read = reader[methodName].bind(reader);
   var numberOfChannels = format.numberOfChannels;
+
+  console.log('length: ' + length);
+  console.log('numberOfChannels: ' + numberOfChannels);
 
   for (var i = 0; i < length; i++) {
     for (var ch = 0; ch < numberOfChannels; ch++) {
